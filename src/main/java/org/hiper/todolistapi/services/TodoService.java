@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
+import java.util.function.Consumer;
 
 @Service
 @Transactional
@@ -41,7 +42,7 @@ public class TodoService {
         return repository.save(existing);
     }
 
-    public Todo patch(Long id, java.util.function.Consumer<Todo> patcher) {
+    public Todo patch(Long id, Consumer<Todo> patcher) {
         Todo existing = get(id);
         patcher.accept(existing);
         return repository.save(existing);
