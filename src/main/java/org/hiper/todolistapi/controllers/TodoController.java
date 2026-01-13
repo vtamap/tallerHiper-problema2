@@ -55,8 +55,14 @@ public class TodoController {
 
     @PutMapping("/{id}")
     public TodoResponse update(@PathVariable Long id, @Valid @RequestBody TodoRequest request) {
-        Todo entity = TodoMapper.toEntity(request);
-        return TodoMapper.toResponse(service.update(id, entity));
+        // Buscamos la tarea existente
+        Todo existingTodo = service.get(id);
+
+        // Usamos el mapper para actualizar SOLO los campos que vienen en el request
+        TodoMapper.updateEntity(existingTodo, request);
+
+        // Guardamos los cambios y devolvemos la respuesta
+        return TodoMapper.toResponse(service.create(existingTodo));
     }
 
     @PatchMapping("/{id}/complete")
